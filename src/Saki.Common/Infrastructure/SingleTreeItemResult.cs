@@ -1,13 +1,14 @@
-﻿namespace Saki.Tree
+﻿namespace Saki.Common.Infrastructure
 {
     using Saki.Result;
     using System;
     using System.Collections.Generic;
     using System.Text;
 
-    public class SingleTreeItemResult : SakiResult<SakiTreeItem>
+    public class SingleTreeItemResult<T> : SakiResult<T>
+        where T : SakiTreeItem
     {
-        public SingleTreeItemResult(SakiTreeItem data) : base(data)
+        public SingleTreeItemResult(T data) : base(data)
         {
         }
 
@@ -19,7 +20,7 @@
         {
         }
 
-        public SingleTreeItemResult(SakiResult<SakiTreeItem> sakiResult) : base(sakiResult)
+        public SingleTreeItemResult(SakiResult<T> sakiResult) : base(sakiResult)
         {
         }
     }
