@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="SimpleInjector" Version="4.4.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Saki.Common\Saki.Common.csproj" />
+    <ProjectReference Include="..\Saki.Core\Saki.Core.csproj" />
     <ProjectReference Include="..\Saki\Saki.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SakiDirectory\" />
   </ItemGroup>
 
 </Project>

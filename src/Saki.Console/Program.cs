@@ -1,8 +1,11 @@
 ﻿namespace Saki.Console
 {
     using MediatR;
+    using Saki.Result;
     using SimpleInjector;
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -10,24 +13,25 @@
     {
         static void Main(string[] args)
         {
-            var thisAssembly = typeof(Program).Assembly;
+            var ass = new List<Assembly>
+            {
+                typeof(Program).Assembly,
+                //typeof(Common.SakiTreeItem).Assembly,
+                //typeof(Extensions.SakiProject.Commands.CreateSakiProjectCommandHandler).Assembly
+            };
 
             var container = new Container();
 
-            var types = container.GetTypesToRegister(typeof(IRequestHandler<,>), thisAssembly);
+            var r = Do<SakiResult<int>>();
         }
-    }
 
-    public class A { };
-    public class B : A { };
-
-    public class R1 : IRequest<A> { }
-
-    public class H1 : IRequestHandler<R1, A>
-    {
-        public Task<A> Handle(R1 request, CancellationToken cancellationToken)
+        public static TResult Do<TResult>()
+            where TResult : IBaseSakiResult
         {
-            throw new NotImplementedException();
+            var error = new SakiError("");
+            var errorResult = Activator.CreateInstance<TResult>();
+            errorResult.AddError(error);
+            return errorResult;
         }
     }
 }

@@ -16,5 +16,10 @@
             Message = message;
             Exception = sakiException;
         }
+
+        public SakiError(SakiException sakiException)
+            : this(sakiException.Message, sakiException)
+        {
+        }
     }
 }

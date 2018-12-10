@@ -4,9 +4,14 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class SakiResult<T> : SakiResult, ISakiResult<T>
+    public class SakiResult<T> : BaseSakiResult, ISakiResult<T>
     {
         public T Data { get; set; }
+
+        public SakiResult()
+        {
+            Data = default(T);
+        }
 
         public SakiResult(T data)
         {
@@ -30,22 +35,43 @@
         }
     }
 
-    public class SakiResult : ISakiResult
+    public class SakiResult : BaseSakiResult, ISakiResult
+    {
+        public SakiResult()
+        {
+        }
+
+        public SakiResult(ISakiError error) : base(error)
+        {
+        }
+
+        public SakiResult(IEnumerable<ISakiError> errors) : base(errors)
+        {
+        }
+
+        public SakiResult(BaseSakiResult sakiResult) : base(sakiResult)
+        {
+        }
+
+        public SakiUnit Data => SakiUnit.Value;
+    }
+
+    public class BaseSakiResult : IBaseSakiResult
     {
         private HashSet<ISakiError> _errors;
         public IEnumerable<ISakiError> Errors => _errors;
         public bool HasErrors => _errors == null || _errors.Count == 0;
 
-        public SakiResult()
+        public BaseSakiResult()
         {
         }
 
-        public SakiResult(ISakiError error)
+        public BaseSakiResult(ISakiError error)
         {
             AddError(error);
         }
 
-        public SakiResult(IEnumerable<ISakiError> errors)
+        public BaseSakiResult(IEnumerable<ISakiError> errors)
         {
             if (errors == null) return;
 
@@ -53,7 +79,7 @@
                 AddError(error);
         }
 
-        public SakiResult(SakiResult sakiResult)
+        public BaseSakiResult(BaseSakiResult sakiResult)
             : this(sakiResult._errors)
         {
 
@@ -67,13 +93,6 @@
                 _errors = new HashSet<ISakiError>();
 
             _errors.Add(error);
-        }
-    }
-
-    public class Test
-    {
-        public void Do()
-        {
         }
     }
 }

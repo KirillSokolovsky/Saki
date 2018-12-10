@@ -6,5 +6,6 @@ namespace Saki.Common.Interfaces
 {
     public interface ISakiTreeItemData
     {
+        int ItemId { get; }
     }
 }

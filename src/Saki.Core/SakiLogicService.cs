@@ -8,6 +8,8 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Reflection;
+    using System.Threading;
 
     public class SakiLogicService : ISakiLogicService
     {
@@ -16,38 +18,43 @@
         public SakiLogicService(Container container)
         {
             _container = container;
-
         }
 
-        public Task<ISakiResult<SakiTreeItem>> CreateItem(SakiTreeItem itemInfo, int parentItemId)
+        public async Task<TResult> ExecuteCommand<TCommand, TResult>(TCommand command, CancellationToken cancellationToken)
+            where TCommand : ISakiCommand<TResult>
+            where TResult : IBaseSakiResult
         {
-            //get handler for create item command for concret item type
-            throw new NotImplementedException();
+            var extensionService = _container.GetInstance<ISakiExtensionsService>();
+
+            var executor = extensionService.GetCommandExecutor<TCommand, TResult>(command.ItemCategory, command.ItemType, command.CommandName);
+
+            if (executor == null)
+            {
+                var error = new SakiError("");
+                var errorResult = Activator.CreateInstance<TResult>();
+                errorResult.AddError(error);
+                return errorResult;
+            }
+
+            var result = await executor.Execute(command, cancellationToken);
+
+            return result;
         }
 
-        public Task<ISakiResult> DeleteItem(int itemId)
+        public async Task<ISakiResult<IEnumerable<ISakiAvailableCommand>>> GetAvailableCommands(ISakiTreeState treeState)
         {
-            throw new NotImplementedException();
-        }
+            var extensionService = _container.GetInstance<ISakiExtensionsService>();
+            var provider = extensionService.GetAvailableCommandsProvider(treeState);
 
-        public Task<ISakiResult<TItemData>> GetItemData<TItemData>(SakiTreeItem<TItemData> item) where TItemData : ISakiTreeItemData
-        {
-            throw new NotImplementedException();
-        }
+            if (provider == null)
+            {
+                var error = new SakiError("");
+                return new SakiResult<IEnumerable<ISakiAvailableCommand>>(error);
+            }
 
-        public Task<ISakiResult<IEnumerable<TCommand>>> GetOnItemCommands<TCommand>(int itemId) where TCommand : ISakiTreeItemCommand
-        {
-            throw new NotImplementedException();
-        }
+            var result = await provider.GetAvailableCommands(treeState);
 
-        public Task<ISakiResult<SakiTreeItem>> UpdateItem(int itemId, SakiTreeItem updatedItemInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ISakiResult> UpdateItemData<TItemData>(SakiTreeItem<TItemData> item) where TItemData : ISakiTreeItemData
-        {
-            throw new NotImplementedException();
+            return result;
         }
     }
 }

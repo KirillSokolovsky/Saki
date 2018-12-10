@@ -11,15 +11,11 @@
         public string Name { get; set; }
         public string Description { get; set; }
 
-
-        public int ItemCategory { get; set; }
-        public int ItemType { get; set; }
+        public string ItemCategory { get; set; }
+        public string InnerType { get; set; }
 
         public int? DataId { get; set; }
         public int? ParentId { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
     }
 
     public class SakiTreeItem<TItemData> : SakiTreeItem
