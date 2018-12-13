@@ -13,6 +13,6 @@
             where TCommand : ISakiCommand<TResult>
             where TResult : IBaseSakiResult;
 
-        Task<ISakiResult<IEnumerable<ISakiAvailableCommand>>> GetAvailableCommands(SakiTreeItem item);
+        Task<ISakiResult<IEnumerable<ISakiAvailableCommand>>> GetAvailableCommands(SakiTreeItem item, SakiTreeState treeState);
     }
 }

@@ -7,5 +7,7 @@ namespace Saki.Common.Interfaces
     public interface ISakiTreeItemData
     {
         int ItemId { get; }
+        string Name { get; }
+        string Description { get; }
     }
 }

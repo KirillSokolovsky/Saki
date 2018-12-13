@@ -10,6 +10,5 @@
     {
         string ItemCategory { get; }
         string ItemType { get; }
-        string CommandName { get; }
     }
 }

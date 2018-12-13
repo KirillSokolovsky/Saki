@@ -41,7 +41,7 @@
             return result;
         }
 
-        public async Task<ISakiResult<IEnumerable<ISakiAvailableCommand>>> GetAvailableCommands(ISakiTreeState treeState)
+        public async Task<ISakiResult<IEnumerable<ISakiAvailableCommand>>> GetAvailableCommands(SakiTreeItem item, SakiTreeState treeState)
         {
             var extensionService = _container.GetInstance<ISakiExtensionsService>();
             var provider = extensionService.GetAvailableCommandsProvider(treeState);

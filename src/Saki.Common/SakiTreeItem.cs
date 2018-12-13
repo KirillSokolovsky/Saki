@@ -5,22 +5,23 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class SakiTreeItem
+    public class SakiTreeItem<TData> : ISakiTreeItem<TData>
+        where TData : ISakiTreeItemData
     {
-        public int Id { get; set; }
+        public int ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
         public string ItemCategory { get; set; }
-        public string InnerType { get; set; }
+        public string ItemType { get; set; }
 
-        public int? DataId { get; set; }
-        public int? ParentId { get; set; }
+        public int ParentId { get; set; }
+        public int DataId { get; set; }
+        public TData Data { get; set; }
     }
 
-    public class SakiTreeItem<TItemData> : SakiTreeItem
-        where TItemData : ISakiTreeItemData
+    public class SakiTreeItem : SakiTreeItem<SakiTreeItemData>
     {
-        public TItemData Data { get; set; }
+
     }
 }

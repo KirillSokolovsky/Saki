@@ -14,5 +14,6 @@
         int ParentId { get; }
 
         TData Data { get; }
+        int DataId { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Saki.Console
 {
-    using MediatR;
+    using Saki.Common;
+    using Saki.Common.Interfaces;
     using Saki.Result;
     using SimpleInjector;
     using System;
@@ -32,6 +33,22 @@
             var errorResult = Activator.CreateInstance<TResult>();
             errorResult.AddError(error);
             return errorResult;
+        }
+               
+        public async Task<IEnumerable<ISakiTreeItem<ISakiTreeItemData>>> GetChildItems(int parentItemId, CancellationToken token)
+        {
+            await Task.Delay(1000);
+
+            var list = new List<ISakiTreeItem<ISakiTreeItemData>>();
+
+            list.Add(new SakiTreeItem<Data1>());
+
+            return list;
+        }
+
+        public class Data1 : SakiTreeItemData
+        {
+            public bool Test { get; set; }
         }
     }
 }
