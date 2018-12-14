@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <PackageReference Include="SimpleInjector" Version="4.4.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SimpleInjector" Version="4.4.2" />
+    <ProjectReference Include="..\Saki.Framework\Saki.Framework.csproj" />
   </ItemGroup>
 
 </Project>

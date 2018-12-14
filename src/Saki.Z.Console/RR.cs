@@ -8,7 +8,10 @@ namespace Test
 {
     public interface IBaseSakiResult { }
     public interface ISakiResult<out TResult> : IBaseSakiResult { };
-    public class SakiResult<TResult> : ISakiResult<TResult> { }
+    public class SakiResult<TResult> : ISakiResult<TResult>
+    {
+        public TResult Result { get; set; }
+    }
 
     public interface ISakiRequest<out TResult>
             where TResult : IBaseSakiResult

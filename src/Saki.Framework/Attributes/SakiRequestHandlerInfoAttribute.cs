@@ -8,9 +8,9 @@
     public class SakiRequestHandlerInfoAttribute : Attribute
     {
         public string HandledCommandName { get; set; }
-        public string ProcessingDataType { get; set; }
+        public Type ProcessingDataType { get; set; }
 
-        public SakiRequestHandlerInfoAttribute(string handledCommandName, string processingDataType)
+        public SakiRequestHandlerInfoAttribute(string handledCommandName, Type processingDataType)
         {
             HandledCommandName = handledCommandName;
             ProcessingDataType = processingDataType;

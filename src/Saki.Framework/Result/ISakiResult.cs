@@ -11,8 +11,8 @@
 
     public interface ISakiResult
     {
+        SakiResultType Result { get; }
         void AddError(ISakiError error);
         IEnumerable<ISakiError> Errors { get; }
-        bool HasErrors { get; }
     }
 }

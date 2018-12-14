@@ -18,12 +18,20 @@ namespace Test
             _container = new Container();
         }
 
-        public Task<TResult> ProcessRequest<TResult>(ISakiRequest<TResult> request, CancellationToken cancellationToken)
+        public async Task<TResult> ProcessRequest<TResult>(ISakiRequest<TResult> request, CancellationToken cancellationToken)
             where TResult : IBaseSakiResult
         {
-            FindRequestHadnlerFor<ISakiRequest<TResult>,TResult>(request);
+            var findHandlerResult = GetHandler(request);
+            
+            if(findHandlerResult.Result != null)
+            {
+                var handler = findHandlerResult.Result;
+                var requestResult = await handler.Handle(request, cancellationToken);
 
-            return Task.FromResult<TResult>(default(TResult));
+                return requestResult;
+            }
+
+            return default(TResult);
         }
 
         public ISakiRequestHandler<TRequest, TResult> FindRequestHadnlerFor<TRequest, TResult>(TRequest request)
@@ -35,6 +43,12 @@ namespace Test
             //command data argument type
 
 
+            return null;
+        }
+
+        public SakiResult<ISakiRequestHandler<ISakiRequest<TResult>, TResult>> GetHandler<TResult>(ISakiRequest<TResult> request)
+            where TResult : IBaseSakiResult
+        {
             return null;
         }
 
