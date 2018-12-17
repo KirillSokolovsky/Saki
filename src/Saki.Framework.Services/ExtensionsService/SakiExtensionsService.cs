@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.ExtensionsService
+﻿namespace Saki.Framework.Services.ExtensionsService
 {
     using Saki.Framework.Attributes;
     using Saki.Framework.Interfaces;

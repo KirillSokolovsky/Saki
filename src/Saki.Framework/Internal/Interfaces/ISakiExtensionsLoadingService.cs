@@ -1,5 +1,6 @@
 ﻿namespace Saki.Framework.Internal.Interfaces
 {
+    using Saki.Framework.Logging;
     using Saki.Framework.Result;
     using System;
     using System.Collections.Generic;
@@ -8,6 +9,6 @@
 
     public interface ISakiExtensionsLoadingService
     {
-        SakiResult<IEnumerable<Assembly>> LoadExtensions();
+        SakiResult<IEnumerable<Assembly>> LoadExtension(string extensionDirectory, ILogger log);
     }
 }

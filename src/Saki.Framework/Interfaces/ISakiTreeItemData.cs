@@ -6,7 +6,6 @@
 
     public interface ISakiTreeItemData
     {
-        int ItemId { get; }
         string Name { get; }
         string Description { get; }
     }

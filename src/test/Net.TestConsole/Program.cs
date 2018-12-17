@@ -1,14 +1,18 @@
-﻿namespace NetCore.TestConsole
+﻿namespace Net.TestConsole
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Reflection;
+    using Saki.Framework.Attributes;
     using Saki.Framework.Internal.Interfaces;
+    using Saki.Framework.NetExtensionsLoader;
+    using SimpleInjector;
     using Saki.Framework.Logging;
     using Saki.Framework.Logging.Simple;
-    using Saki.Framework.NetCoreExtensionsLoader;
     using Saki.Framework.Services.ExtensionsService;
-    using SimpleInjector;
-    using System;
-    using System.Linq;
-    using System.Runtime.Loader;
 
     class Program
     {
@@ -18,7 +22,7 @@
             var ext2directory = @"C:\Dev\SaKi\Saki\src\sample\SampleExtensionWithDependency\bin\Debug\netstandard2.0";
 
             var container = new Container();
-            container.Register<ISakiExtensionsLoadingService, SakiNetCoreExtensionsLoadingService>();
+            container.Register<ISakiExtensionsLoadingService, SakiNetExtensionsLoadingService>();
             container.Register<ISakiExtensionsService, SakiExtensionsService>();
             container.Register<ILogger, SimpleLogger>();
 
@@ -28,8 +32,6 @@
 
             var extAss = extService.LoadExtension(ext1directory);
             var extAss1 = extService.LoadExtension(ext2directory);
-
-            var t = Type.GetType("SampleItemData");
 
             Console.WriteLine("Done");
             Console.ReadLine();

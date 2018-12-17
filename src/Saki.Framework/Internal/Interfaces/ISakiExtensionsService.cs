@@ -1,6 +1,6 @@
-﻿namespace Saki.Framework.Internal.Inerfaces
+﻿namespace Saki.Framework.Internal.Interfaces
 {
-    using Saki.Framework.Inerfaces;
+    using Saki.Framework.Interfaces;
     using Saki.Framework.Internal.ExtensionsInfo;
     using Saki.Framework.Result;
     using System;
@@ -9,6 +9,8 @@
 
     public interface ISakiExtensionsService
     {
+        SakiResult LoadExtension(string extensionDirectory);
+
         SakiExtensionsInfo GetInfo();
 
         SakiResult<ISakiRequestHandler<ISakiRequest<TResult>, TResult>> FindHandler<TResult>(string extensionName, ISakiRequest<TResult> request)

@@ -7,6 +7,13 @@
 
     public class SakiResult<T> : SakiResult, ISakiResult<T>
     {
+        public new static SakiResult<T> Ok(T result) => new SakiResult<T>(result);
+
+        public new static SakiResult<T> FromEx(SakiException sakiException)
+        {
+            return new SakiResult<T>(new SakiError(sakiException));
+        }
+
         public T Data { get; set; }
 
         public SakiResult(T data)

@@ -1,33 +1,41 @@
-﻿namespace Saki.Framework.NetCoreExtensionsLoader
+﻿namespace Saki.Framework.NetExtensionsLoader
 {
     using Saki.Framework.Attributes;
     using Saki.Framework.Internal;
     using Saki.Framework.Internal.Interfaces;
     using Saki.Framework.Logging;
     using Saki.Framework.Result;
-    using SimpleInjector;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.Loader;
     using System.Text;
-    using Dnlib = dnlib.DotNet;
+    using System.Threading.Tasks;
 
-    public class SakiNetCoreExtensionsLoadingService : BaseSakiExtensionsLoadingService
+    public class SakiNetExtensionsLoadingService : BaseSakiExtensionsLoadingService
     {
         protected override bool IsAssemblySakiExtension(FileInfo dllFileInfo, ILogger scanLog)
         {
             var reqAttTypeName = typeof(SakiFrameworkExtensionInfoAttribute).FullName;
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+            Assembly assembly = null;
 
-            var module = Dnlib.ModuleDefMD.Load(dllFileInfo.FullName);
-
-            if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName == module.Assembly.FullName))
+            try
+            {
+                assembly = Assembly.ReflectionOnlyLoadFrom(dllFileInfo.FullName);
+            }
+            catch(FileLoadException)
+            {
+                scanLog?.INFO($"Same assembly to {dllFileInfo.Name} has been already loaded");
                 return false;
+            }
 
-            var extAttribute = module.Assembly.CustomAttributes.Find(reqAttTypeName);
-            if (extAttribute != null)
+            var customAtts = assembly.GetCustomAttributesData();
+
+            var extAttribute = customAtts.FirstOrDefault(ca => ca.AttributeType.FullName == reqAttTypeName);
+
+            if(extAttribute != null)
             {
                 scanLog?.INFO($"Found possible extension in {dllFileInfo.Name}");
                 return true;
@@ -40,13 +48,15 @@
 
         protected override SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log)
         {
+            _allDllFileInfos = allAssemblies;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
             var loadedAssemblies = new List<Assembly>();
 
             foreach (var assemblyToLoad in assembliesToLoad)
             {
                 var loadingLog = log?.CreateChildLogger($"Loading: {assemblyToLoad.Name}");
-                var loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyToLoad.FullName);
-
+                var loadedAssembly = Assembly.LoadFrom(assemblyToLoad.FullName);
 
                 Type infoProviderType = loadedAssembly.GetCustomAttribute<SakiFrameworkExtensionInfoAttribute>()
                     .InfoProviderType;
@@ -67,7 +77,7 @@
                 }
             }
 
-            if (loadedAssemblies.Count == 0)
+            if(loadedAssemblies.Count == 0)
             {
                 var ex = new SakiExtensionsServiceException(
                     nameof(LoadAssembliesWithResolving),
@@ -77,6 +87,37 @@
             }
 
             return SakiResult<IEnumerable<Assembly>>.Ok(loadedAssemblies);
+        }
+
+        private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            try
+            {
+                var resolved = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
+
+                if (resolved != null)
+                    return resolved;
+
+                resolved = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
+                if (resolved != null)
+                {
+                    var reflectionOnly = Assembly.ReflectionOnlyLoadFrom(resolved.CodeBase);
+                    return reflectionOnly;
+                }
+
+                return null;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
+
+        private List<FileInfo> _allDllFileInfos;
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var resolved = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
+            return resolved;
         }
     }
 }

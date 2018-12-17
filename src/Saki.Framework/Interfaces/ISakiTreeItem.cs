@@ -8,12 +8,11 @@
         where TData : ISakiTreeItemData
     {
         int ItemId { get; }
-        string ItemCategory { get; }
-        string ItemDataType { get; }
-
         int ParentId { get; }
 
-        int DataId { get; }
+        string ExtensionName { get; }
+        string ItemDataType { get; }
+
         TData Data { get; }
     }
 }

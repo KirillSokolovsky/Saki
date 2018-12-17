@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Tree
+﻿namespace Saki.Framework.SakiTree
 {
     using Saki.Framework.Interfaces;
     using System;
@@ -10,13 +10,10 @@
     {
         public int ItemId { get; set; }
 
-        public string ItemCategory { get; set; }
-
+        public string ExtensionName { get; set; }
         public string ItemDataType { get; set; }
 
         public int ParentId { get; set; }
-
-        public int DataId { get; set; }
 
         public TData Data { get; set; }
     }

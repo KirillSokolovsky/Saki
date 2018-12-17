@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.ExtensionsService
+﻿namespace Saki.Framework.Internal
 {
     using Saki.Framework.Exceptions;
     using System;
@@ -8,7 +8,7 @@
     public class SakiExtensionsServiceException : SakiException
     {
         public SakiExtensionsServiceException(string exType, string message, Exception innerException = null) 
-            : base($"{nameof(SakiExtensionsService)}.{exType}", message, innerException)
+            : base($"{nameof(BaseSakiExtensionsLoadingService)}.{exType}", message, innerException)
         {
         }
     }

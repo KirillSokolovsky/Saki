@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Internal.Inerfaces
+﻿namespace Saki.Framework.Internal.Interfaces
 {
     using System;
     using System.Collections.Generic;

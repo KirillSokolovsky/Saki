@@ -8,6 +8,6 @@ namespace SampleExtension
 
     public class SampleExtensionInfoProvider : ISakiExtensionInfoProvider
     {
-        public string ExtensionName => "SampleExtension";
+        public virtual string ExtensionName => "SampleExtension";
     }
 }

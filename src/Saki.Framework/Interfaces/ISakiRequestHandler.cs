@@ -1,6 +1,6 @@
-﻿namespace Saki.Framework.Inerfaces
+﻿namespace Saki.Framework.Interfaces
 {
-    using Saki.Framework.Internal.Inerfaces;
+    using Saki.Framework.Internal.Interfaces;
     using Saki.Framework.Result;
     using System;
     using System.Collections.Generic;

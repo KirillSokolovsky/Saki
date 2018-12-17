@@ -7,46 +7,60 @@
     using SimpleInjector;
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
 
     public abstract class BaseSakiExtensionsLoadingService : ISakiExtensionsLoadingService
     {
-        protected readonly Container _container;
-        protected readonly ILogger _log;
-
-        public BaseSakiExtensionsLoadingService(Container container)
+        public SakiResult<IEnumerable<Assembly>> LoadExtension(string extensionDirectory, ILogger log)
         {
-            _container = container;
-            _log = container.GetInstance<ILogger>()?.CreateChildLogger(GetType().Name);
-        }
+            log = log?.CreateChildLogger($"TryLoadExtension from directory: {extensionDirectory}");
 
-        public abstract SakiResult<IEnumerable<Assembly>> LoadExtensions();
-
-        public virtual bool IsAssemblySakiExtension(Assembly assembly, ILogger log)
-        {
-            var extAttribute = assembly.GetCustomAttribute<SakiFrameworkExtensionInfoAttribute>();
-            if (extAttribute != null)
+            var di = new DirectoryInfo(extensionDirectory);
+            if (!di.Exists)
             {
-                var infoProviderType = extAttribute.InfoProviderType;
-                log?.INFO($"Found possible extension in {assembly.FullName}");
-                log?.INFO($"InfoProviderType: {infoProviderType.FullName}");
-
-                if (!typeof(ISakiExtensionInfoProvider).IsAssignableFrom(infoProviderType))
-                    log?.INFO($"{infoProviderType.FullName} doesn't implements ISakiExtensionInfoProvider");
-                else if (!infoProviderType.IsClass)
-                    log?.INFO($"{infoProviderType.FullName} is not a class");
-                else if (!infoProviderType.IsAbstract)
-                    log?.INFO($"{infoProviderType.FullName} is an abstract class");
-                else if (infoProviderType.GetConstructor(Type.EmptyTypes) == null)
-                    log?.INFO($"{infoProviderType.FullName} doesn't implement empty ctor");
-                else
-                {
-                    log.INFO("All seems to be ok for futher loading");
-                    return true;
-                }
+                var ex = new SakiExtensionsServiceException(
+                    nameof(LoadExtension),
+                    $"Directory {extensionDirectory} doesn't exists");
+                log?.ERROR(ex.Message);
+                return SakiResult<IEnumerable<Assembly>>.FromEx(ex);
             }
-            return false;
+
+            var dllsFileInfos = di.GetFiles("*.dll").ToList();
+            log?.INFO($"Found: {dllsFileInfos.Count} dlls:", dllsFileInfos.Select(f => f.Name));
+
+            var scanLog = log?.CreateChildLogger("Scan dlls for possible extensions");
+
+            var possibleExtensionsFileInfos = new List<FileInfo>();
+
+            foreach (var dllFileInfo in dllsFileInfos)
+            {
+                scanLog?.INFO($"Dll file: {dllFileInfo.Name}");
+                if (IsAssemblySakiExtension(dllFileInfo, scanLog))
+                    possibleExtensionsFileInfos.Add(dllFileInfo);
+            }
+
+            if (possibleExtensionsFileInfos.Count == 0)
+            {
+                var ex = new SakiExtensionsServiceException(
+                    nameof(LoadExtension),
+                    $"Directory {extensionDirectory} doesn't contains any posible extension dlls");
+                log?.ERROR(ex.Message);
+                return SakiResult<IEnumerable<Assembly>>.FromEx(ex);
+            }
+
+            log?.INFO($"Try Load assemblies from dll. Count: {possibleExtensionsFileInfos.Count}:", possibleExtensionsFileInfos.Select(f => f.Name));
+
+
+            var loadResult = LoadAssembliesWithResolving(possibleExtensionsFileInfos, dllsFileInfos, log);
+            return loadResult;
         }
+
+
+        protected abstract bool IsAssemblySakiExtension(FileInfo dllFileInfo, ILogger scanLog);
+
+        protected abstract SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log);
     }
 }
