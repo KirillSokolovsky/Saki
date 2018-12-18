@@ -10,5 +10,8 @@
     {
         public string SampleStrProp { get; set; }
         public bool SampleBoolProp { get; set; }
+        public Dapper.DefaultTypeMap Map{ get; set; }
+        public AutoMapper.Mapper Mapper { get; set; }
+        public RestSharp.RestClient Client { get; set; }
     }
 }

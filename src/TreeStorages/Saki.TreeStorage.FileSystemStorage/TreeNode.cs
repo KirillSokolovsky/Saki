@@ -11,7 +11,7 @@
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public string ItemType { get; set; }
+        public string ItemDataType { get; set; }
         public string ExtensionName { get; set; }
 
         public int ParentNodeId { get; set; }

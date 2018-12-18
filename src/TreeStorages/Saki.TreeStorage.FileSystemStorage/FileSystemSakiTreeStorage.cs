@@ -13,7 +13,7 @@
 
     public class FileSystemSakiTreeStorage : ISakiTreeStorage
     {
-        private static JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings()
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings()
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             TypeNameHandling = TypeNameHandling.Arrays | TypeNameHandling.Objects,
@@ -22,8 +22,8 @@
         };
         private List<TreeNode> _nodes;
         private List<TreeNode> _allNodes;
-        private string _pathToStorageJsonFile;
-        
+        private readonly string _pathToStorageJsonFile;
+
         public FileSystemSakiTreeStorage(string pathToStorageJsonFile)
         {
             _pathToStorageJsonFile = pathToStorageJsonFile;
@@ -38,7 +38,7 @@
             {
                 NodeId = newId,
                 ExtensionName = createSakiTreeItemModel.ExtensionName,
-                ItemType = createSakiTreeItemModel.ItemDataType,
+                ItemDataType = createSakiTreeItemModel.ItemDataType,
                 Name = createSakiTreeItemModel.Name,
                 Description = createSakiTreeItemModel.Description,
                 Data = createSakiTreeItemModel.Data
@@ -75,12 +75,33 @@
 
         public Task<SakiResult<IEnumerable<StoredSakiTreeItemModel>>> GetChildItems(int parentItemId)
         {
-            throw new NotImplementedException();
+            var parentNode = _allNodes.FirstOrDefault(n => n.NodeId == parentItemId);
+            if (parentNode == null)
+            {
+                var ex = new FileSystemSakiTreeStorageException(nameof(CreateItem),
+                    $"There is no parent item with id: {parentItemId}");
+                return Task.FromResult(SakiResult<IEnumerable<StoredSakiTreeItemModel>>.FromEx(ex));
+            }
+
+            var models = parentNode.Nodes?.Select(n => StoredModelFromNode(n)).ToList()
+                ?? new List<StoredSakiTreeItemModel>();
+
+            return Task.FromResult(SakiResult<IEnumerable<StoredSakiTreeItemModel>>.Ok(models));
         }
 
         public Task<SakiResult<StoredSakiTreeItemModel>> GetItem(int itemId)
         {
-            throw new NotImplementedException();
+            var node = _allNodes.FirstOrDefault(n => n.NodeId == itemId);
+            if (node == null)
+            {
+                var ex = new FileSystemSakiTreeStorageException(nameof(CreateItem),
+                    $"There is no item with id: {itemId}");
+                return Task.FromResult(SakiResult<StoredSakiTreeItemModel>.FromEx(ex));
+            }
+
+            var model = StoredModelFromNode(node);
+
+            return Task.FromResult(SakiResult<StoredSakiTreeItemModel>.Ok(model));
         }
 
         public Task<SakiResult> UpdatedItem(int itemId, UpdateSakiTreeItemModel updateSakiTreeItemModel)
@@ -88,6 +109,20 @@
             throw new NotImplementedException();
         }
 
+        private StoredSakiTreeItemModel StoredModelFromNode(TreeNode node)
+        {
+            var model = new StoredSakiTreeItemModel
+            {
+                ItemId = node.NodeId,
+                ParentId = node.ParentNodeId,
+                Name = node.Name,
+                Description = node.Description,
+                ExtensionName = node.ExtensionName,
+                ItemDataType = node.ItemDataType,
+                Data = node.Data
+            };
+            return model;
+        }
 
         public async Task<ISakiResult> Save()
         {

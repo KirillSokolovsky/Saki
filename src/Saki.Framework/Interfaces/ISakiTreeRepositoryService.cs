@@ -15,6 +15,6 @@
 
         Task<SakiResult<int>> CreateItem(ISakiTreeItem<ISakiTreeItemData> treeItem, int parentItemId);
 
-        Task<SakiResult<IEnumerable<ISakiTreeItem<ISakiTreeItemData>>>> GetChildItems(int parentItemId);
+        Task<SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>> GetChildItems(int parentItemId);
     }
 }

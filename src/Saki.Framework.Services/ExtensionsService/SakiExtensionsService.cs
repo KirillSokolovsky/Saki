@@ -46,11 +46,23 @@
                 ScanAssembly(loadedAssembly, _log);
             }
 
+            var allAss = AppDomain.CurrentDomain.GetAssemblies();
+            _log?.INFO($"All loaded assemblies. Count {allAss.Length}",
+                allAss.Select(a => a.FullName));
+
             return SakiResult.Ok;
         }
 
         private void ScanAssembly(Assembly assembly, ILogger log)
         {
+            var att = assembly.GetCustomAttribute<SakiFrameworkExtensionInfoAttribute>();
+
+            var type = att.InfoProviderType;
+
+            var infoProvider = (ISakiExtensionInfoProvider)Activator.CreateInstance(type);
+            log?.INFO($"Extension name: {infoProvider.ExtensionName}");
+            
+
             var requestInterfaceType = typeof(ISakiRequestForScan);
             var requestHandlerInterfaceType = typeof(ISakiRequestHandlerForScan);
 

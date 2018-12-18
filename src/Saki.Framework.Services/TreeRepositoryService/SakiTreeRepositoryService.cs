@@ -26,7 +26,7 @@
         public async Task<SakiResult<int>> CreateItem(ISakiTreeItem<ISakiTreeItemData> treeItem, int parentItemId)
         {
             var itemType = treeItem.Data.GetType();
-            var itemDataType = $"{itemType.FullName}, {itemType.Assembly.GetName().Name}";
+            var itemDataType = itemType.GetSakiTypeName();
 
             var dataSerResult = _serializaionService.SerializeTreeItemData(treeItem.Data);
 
@@ -61,23 +61,23 @@
 
             var storedItem = storeResult.Data;
 
-            return CreateFromStored<TData>(storedItem);
+            return CreateTreeItemFromStoredModel<TData>(storedItem);
         }
 
-        public async Task<SakiResult<IEnumerable<ISakiTreeItem<ISakiTreeItemData>>>> GetChildItems(int parentItemId)
+        public async Task<SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>> GetChildItems(int parentItemId)
         {
             var storeResult = await _storage.GetChildItems(parentItemId);
 
             if (storeResult.Result != SakiResultType.Ok)
-                return new SakiResult<IEnumerable<ISakiTreeItem<ISakiTreeItemData>>>(storeResult);
+                return new SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>(storeResult);
 
-            var deserialized = storeResult.Data.Select(s => CreateFromStored<ISakiTreeItemData>(s))
+            var deserialized = storeResult.Data.Select(sr => CreateTreeItemFromStoredModel<ISakiTreeItemData>(sr))
                 .ToList();
 
-            throw new NotImplementedException();
+            return new SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>(deserialized);
         }
 
-        private SakiResult<SakiTreeItem<TData>> CreateFromStored<TData>(StoredSakiTreeItemModel model)
+        private SakiResult<SakiTreeItem<TData>> CreateTreeItemFromStoredModel<TData>(StoredSakiTreeItemModel model)
             where TData : ISakiTreeItemData
         {
             var itemSerResult = _serializaionService.DeserializeTreeItemData<TData>(model.ItemDataType, model.Data);
