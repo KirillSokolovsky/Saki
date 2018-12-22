@@ -23,12 +23,12 @@
             _storage = sakiTreeStorage;
         }
 
-        public async Task<SakiResult<int>> CreateItem(ISakiTreeItem<ISakiTreeItemData> treeItem, int parentItemId)
+        public async Task<SakiResult<int>> CreateItem(string extensionName, ISakiTreeItemData itemData, int parentItemId)
         {
-            var itemType = treeItem.Data.GetType();
+            var itemType = itemData.GetType();
             var itemDataType = itemType.GetSakiTypeName();
 
-            var dataSerResult = _serializaionService.SerializeTreeItemData(treeItem.Data);
+            var dataSerResult = _serializaionService.SerializeTreeItemData(itemData);
 
             if (dataSerResult.Result != SakiResultType.Ok)
                 return new SakiResult<int>(dataSerResult);
@@ -37,11 +37,11 @@
             {
                 ParentItemId = parentItemId,
 
-                ExtensionName = treeItem.ExtensionName,
+                ExtensionName = extensionName,
                 ItemDataType = itemDataType,
 
-                Name = treeItem.Data.Name,
-                Description = treeItem.Data.Description,
+                Name = itemData.Name,
+                Description = itemData.Description,
 
                 Data = dataSerResult.Data
             };
@@ -85,16 +85,44 @@
             if (itemSerResult.Result != SakiResultType.Ok)
                 return new SakiResult<SakiTreeItem<TData>>(itemSerResult);
 
-            var item = new SakiTreeItem<TData>
+            var item = new SakiTreeItem<TData>(itemSerResult.Data)
             {
                 ItemId = model.ItemId,
                 ExtensionName = model.ExtensionName,
                 ItemDataType = model.ItemDataType,
-                ParentId = model.ParentId,
-                Data = itemSerResult.Data
+                ParentId = model.ParentId
             };
 
             return SakiResult<SakiTreeItem<TData>>.Ok(item);
+        }
+
+        public async Task<SakiResult<IEnumerable<string>>> GetChildItemNames(int parentItemId)
+        {
+            var result = await _storage.GetChildItemNames(parentItemId);
+            return result;
+        }
+
+        public async Task<SakiResult<IEnumerable<SakiTreeItem<ISakiTreeItemData>>>> GetAscendantItems(int fromParentId, string tillItemDataType)
+        {
+            var result = new SakiResult<IEnumerable<SakiTreeItem<ISakiTreeItemData>>>();
+
+            var storageResult = await _storage.GetAscendantItems(fromParentId, tillItemDataType);
+            if (storageResult.Result != SakiResultType.Ok)
+                return result.AddResult(storageResult);
+
+            var models = storageResult.Data;
+
+            var castingResults = models.Select(m => CreateTreeItemFromStoredModel<ISakiTreeItemData>(m))
+                .ToList();
+
+            castingResults.ForEach(cr => result.AddResult(cr));
+
+            if (result.Result != SakiResultType.Ok)
+                return result;
+
+            result.SetData(castingResults.Select(cr => cr.Data).ToList());
+
+            return result;
         }
     }
 }

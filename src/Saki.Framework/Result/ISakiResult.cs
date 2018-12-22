@@ -14,5 +14,6 @@
         SakiResultType Result { get; }
         void AddError(ISakiError error);
         IEnumerable<ISakiError> Errors { get; }
+        ISakiResult AddResult(ISakiResult result);
     }
 }

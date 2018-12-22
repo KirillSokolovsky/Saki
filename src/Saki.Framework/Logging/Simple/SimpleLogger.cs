@@ -15,14 +15,16 @@
         {
         }
 
-        private SimpleLogger(string name)
+        private SimpleLogger(string name, int tabsCount)
         {
+            _tabsCount = tabsCount - 1;
             INFO(name);
+            _tabsCount++;
         }
 
         public ILogger CreateChildLogger(string name)
         {
-            return new SimpleLogger(name) { _tabsCount = _tabsCount + 1 };
+            return new SimpleLogger(name, _tabsCount + 1);
         }
 
         public void ERROR(string message, Exception exception = null)

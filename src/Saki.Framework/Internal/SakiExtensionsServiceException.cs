@@ -8,7 +8,7 @@
     public class SakiExtensionsServiceException : SakiException
     {
         public SakiExtensionsServiceException(string exType, string message, Exception innerException = null) 
-            : base($"{nameof(BaseSakiExtensionsLoadingService)}.{exType}", message, innerException)
+            : base($"SakiExtensionsService.{exType}", message, innerException)
         {
         }
     }

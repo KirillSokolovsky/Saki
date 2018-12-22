@@ -4,16 +4,14 @@
     using System.Collections.Generic;
     using System.Text;
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class SakiRequestInfoAttribute : Attribute
     {
         public string CommandName { get; set; }
-        public Type DataType { get; set; }
 
-        public SakiRequestInfoAttribute(string commandName, Type dataType)
+        public SakiRequestInfoAttribute(string commandName)
         {
             CommandName = commandName;
-            DataType = dataType;
         }
     }
 }

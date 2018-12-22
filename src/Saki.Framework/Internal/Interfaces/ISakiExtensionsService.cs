@@ -11,9 +11,7 @@
     {
         SakiResult LoadExtension(string extensionDirectory);
 
-        SakiExtensionsInfo GetInfo();
-
-        SakiResult<ISakiRequestHandler<ISakiRequest<TResult>, TResult>> FindHandler<TResult>(string extensionName, ISakiRequest<TResult> request)
+        SakiResult<object> FindHandler<TResult>(ISakiRequest<TResult> request)
             where TResult : ISakiResult;
     }
 }

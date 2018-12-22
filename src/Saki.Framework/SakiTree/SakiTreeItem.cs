@@ -16,5 +16,10 @@
         public int ParentId { get; set; }
 
         public TData Data { get; set; }
+
+        public SakiTreeItem(TData data)
+        {
+            Data = data;
+        }
     }
 }

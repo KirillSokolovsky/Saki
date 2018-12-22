@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector" Version="4.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Saki.Framework\Saki.Framework.csproj" />
+    <ProjectReference Include="..\..\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj" />
+  </ItemGroup>
+
+</Project>

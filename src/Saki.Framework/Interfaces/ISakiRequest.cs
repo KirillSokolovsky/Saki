@@ -6,8 +6,11 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public interface ISakiRequest<out TResult> : ISakiRequestForScan
+    public interface ISakiRequest<out TResult>
         where TResult : ISakiResult
     {
+        string CommandName { get; }
+        string ExtensionName { get; }
+        string ItemDataType { get; }
     }
 }

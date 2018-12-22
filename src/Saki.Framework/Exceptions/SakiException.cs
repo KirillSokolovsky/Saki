@@ -8,7 +8,7 @@
     {
         public string SakiExType { get; set; }
 
-        public SakiException(string exType, string message, Exception innerException)
+        public SakiException(string exType, string message, Exception innerException = null)
             : base(message, innerException)
         {
             SakiExType = exType;

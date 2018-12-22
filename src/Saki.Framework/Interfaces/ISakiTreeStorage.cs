@@ -13,5 +13,7 @@
         Task<SakiResult<int>> CreateItem(CreateSakiTreeItemModel createSakiTreeItemModel);
         Task<SakiResult> UpdatedItem(int itemId, UpdateSakiTreeItemModel updateSakiTreeItemModel);
         Task<SakiResult<IEnumerable<StoredSakiTreeItemModel>>> GetChildItems(int parentItemId);
+        Task<SakiResult<IEnumerable<string>>> GetChildItemNames(int parentItemId);
+        Task<SakiResult<IEnumerable<StoredSakiTreeItemModel>>> GetAscendantItems(int fromParentId, string tillItemDataType);
     }
 }

@@ -33,7 +33,7 @@
 
         public Task<SakiResult<int>> CreateItem(CreateSakiTreeItemModel createSakiTreeItemModel)
         {
-            var newId = _allNodes.Max(n => n.NodeId) + 1;
+            var newId = _allNodes.Count == 0 ? 1 : (_allNodes.Max(n => n.NodeId) + 1);
             var nodeToAdd = new TreeNode
             {
                 NodeId = newId,
@@ -183,6 +183,49 @@
                 _allNodes.Add(node);
                 FillAllNodes(node.Nodes);
             }
+        }
+
+        public Task<SakiResult<IEnumerable<string>>> GetChildItemNames(int parentItemId)
+        {
+            if (parentItemId < 1)
+                return Task.FromResult(SakiResult<IEnumerable<string>>.Ok(
+                    _nodes.Select(n => n.Name)));
+
+            var parentNode = _allNodes.FirstOrDefault(n => n.NodeId == parentItemId);
+            if (parentNode == null)
+            {
+                var ex = new FileSystemSakiTreeStorageException(nameof(GetChildItemNames),
+                    $"There is no parent item with id: {parentItemId}");
+                return Task.FromResult(SakiResult<IEnumerable<string>>.FromEx(ex));
+            }
+
+            return Task.FromResult(SakiResult<IEnumerable<string>>.Ok(
+                parentNode.Nodes?.Select(n => n.Name) ?? new List<string>()));
+        }
+
+        public Task<SakiResult<IEnumerable<StoredSakiTreeItemModel>>> GetAscendantItems(int fromParentId, string tillItemDataType)
+        {
+            if(fromParentId < 1)
+                return Task.FromResult(SakiResult<IEnumerable<StoredSakiTreeItemModel>>.Ok(new List<StoredSakiTreeItemModel>()));
+
+            var parentNode = _allNodes.FirstOrDefault(n => n.NodeId == fromParentId);
+            if (parentNode == null)
+            {
+                var ex = new FileSystemSakiTreeStorageException(nameof(GetAscendantItems),
+                    $"There is no parent item with id: {fromParentId}");
+                return Task.FromResult(SakiResult<IEnumerable<StoredSakiTreeItemModel>>.FromEx(ex));
+            }
+
+            var items = new List<StoredSakiTreeItemModel>();
+
+            while(parentNode != null && parentNode.ItemDataType != tillItemDataType)
+            {
+                var model = StoredModelFromNode(parentNode);
+                items.Add(model);
+                parentNode = parentNode.ParentNode;
+            }
+
+            return Task.FromResult(SakiResult<IEnumerable<StoredSakiTreeItemModel>>.Ok(items));
         }
     }
 }

@@ -16,10 +16,15 @@
 
         public T Data { get; set; }
 
+        public SakiResult()
+        {
+            Result = SakiResultType.Unknown;
+        }
+
         public SakiResult(T data)
             : base()
         {
-            Data = data;
+            SetData(data);
         }
 
         public SakiResult(ISakiError error)
@@ -39,9 +44,21 @@
         }
 
         public SakiResult(SakiResult sakiResult)
-            :base(sakiResult)
+            : base(sakiResult)
         {
 
+        }
+
+        public void SetData(T data)
+        {
+            Data = data;
+            if (Result == SakiResultType.Unknown)
+                Result = SakiResultType.Ok;
+        }
+
+        public new SakiResult<T> AddResult(ISakiResult result)
+        {
+            return (SakiResult<T>)base.AddResult(result);
         }
     }
 
@@ -93,6 +110,21 @@
 
             Result = SakiResultType.Error;
             _errors.Add(error);
+        }
+
+        public SakiResult AddResult(ISakiResult result)
+        {
+            if (result.Errors == null) return this;
+
+            foreach (var error in result.Errors)
+                AddError(error);
+
+            return this;
+        }
+
+        ISakiResult ISakiResult.AddResult(ISakiResult result)
+        {
+            return AddResult(result);
         }
     }
 }

@@ -18,8 +18,8 @@
     {
         static void Main(string[] args)
         {
-            var ext1directory = @"C:\Dev\SaKi\Saki\src\sample\SampleExtension\bin\Debug\netstandard2.0";
-            var ext2directory = @"C:\Dev\SaKi\Saki\src\sample\SampleExtensionWithDependency\bin\Debug\netstandard2.0";
+            var baseExtDir = @"C:\Dev\SaKi\Saki\src\Extensions\SakiBase\Saki.Framework.Extensions.Base\bin\Debug\netstandard2.0";
+            var weExtDir = @"C:\Dev\SaKi\Saki\src\Extensions\WebElements\Saki.Framework.Extensions.WebElements\bin\Debug\netstandard2.0";
 
             var container = new Container();
             container.Register<ISakiExtensionsLoadingService, SakiNetExtensionsLoadingService>();
@@ -30,8 +30,8 @@
 
             var extService = container.GetInstance<ISakiExtensionsService>();
 
-            var extAss = extService.LoadExtension(ext1directory);
-            var extAss1 = extService.LoadExtension(ext2directory);
+            extService.LoadExtension(baseExtDir);
+            extService.LoadExtension(weExtDir);
 
             Console.WriteLine("Done");
             Console.ReadLine();

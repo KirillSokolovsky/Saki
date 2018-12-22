@@ -13,8 +13,11 @@
         Task<SakiResult<SakiTreeItem<TData>>> GetItem<TData>(int itemId)
             where TData : ISakiTreeItemData;
 
-        Task<SakiResult<int>> CreateItem(ISakiTreeItem<ISakiTreeItemData> treeItem, int parentItemId);
+        Task<SakiResult<int>> CreateItem(string extensionName, ISakiTreeItemData itemData, int parentItemId);
 
         Task<SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>> GetChildItems(int parentItemId);
+
+        Task<SakiResult<IEnumerable<string>>> GetChildItemNames(int parentItemId);
+        Task<SakiResult<IEnumerable<SakiTreeItem<ISakiTreeItemData>>>> GetAscendantItems(int fromParentId, string tillItemDataType);
     }
 }

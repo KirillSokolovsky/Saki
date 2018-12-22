@@ -10,9 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj" />
     <ProjectReference Include="..\..\ExtLoaders\Saki.Framework.NetCoreExtensionsLoader\Saki.Framework.NetCoreExtensionsLoader.csproj" />
     <ProjectReference Include="..\..\Saki.Framework.Services\Saki.Framework.Services.csproj" />
     <ProjectReference Include="..\..\Saki.Framework\Saki.Framework.csproj" />
+    <ProjectReference Include="..\..\TreeStorages\Saki.TreeStorage.FileSystemStorage\Saki.TreeStorage.FileSystemStorage.csproj" />
   </ItemGroup>
 
 </Project>
