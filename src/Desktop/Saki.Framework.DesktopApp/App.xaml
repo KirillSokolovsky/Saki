@@ -13,7 +13,12 @@
                 <!-- Accent and AppTheme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+                
+                <ResourceDictionary Source="pack://application:,,,/Saki.Framework.DesktopApp.Extensions.Base;component/Tree/TreeResourceDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Saki.Framework.DesktopApp.Extensions.Base;component/Project/ProjectResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

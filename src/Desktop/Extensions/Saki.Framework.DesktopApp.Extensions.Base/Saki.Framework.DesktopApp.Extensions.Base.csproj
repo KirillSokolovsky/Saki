@@ -4,19 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{45498630-D347-4C0B-BDD0-7B2CD7682C0B}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>Saki.Framework.DesktopApp</RootNamespace>
-    <AssemblyName>Saki.Framework.DesktopApp</AssemblyName>
+    <ProjectGuid>{D5719889-6BD5-4F57-B414-E07A16FCFF4F}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>Saki.Framework.DesktopApp.Extensions.Base</RootNamespace>
+    <AssemblyName>Saki.Framework.DesktopApp.Extensions.Base</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -51,31 +48,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="IDesktopCommandProcessingService.cs" />
-    <Compile Include="SakiTreeUserControl.xaml.cs">
-      <DependentUpon>SakiTreeUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TreeItemDataTemplateSelector.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="SakiTreeUserControl.xaml">
+    <Page Include="Project\ProjectResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Tree\TreeResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Converters\DebugConverter.cs" />
+    <Compile Include="Converters\SakiTreeItemChildrenConverters.cs" />
+    <Compile Include="Project\ProjectTreeItemViewModel.cs" />
+    <Compile Include="Tree\TreeItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -101,34 +85,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ExtLoaders\Saki.Framework.NetExtensionsLoader\Saki.Framework.NetExtensionsLoader.csproj">
-      <Project>{00bbc4ef-2867-4cad-b324-3825be31c04c}</Project>
-      <Name>Saki.Framework.NetExtensionsLoader</Name>
+    <ProjectReference Include="..\..\..\Extensions\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj">
+      <Project>{6d75484a-7049-4d92-8d5c-e83f85fdd8c5}</Project>
+      <Name>Saki.Framework.Extensions.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Saki.Framework.Services\Saki.Framework.Services.csproj">
-      <Project>{1b20c2ac-55d2-4b19-b3c8-1ba8bf01d544}</Project>
-      <Name>Saki.Framework.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Saki.Framework\Saki.Framework.csproj">
+    <ProjectReference Include="..\..\..\Saki.Framework\Saki.Framework.csproj">
       <Project>{f22b0f30-c28e-4e23-b11a-b9a6dbb0208f}</Project>
       <Name>Saki.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TreeStorages\Saki.TreeStorage.FileSystemStorage\Saki.TreeStorage.FileSystemStorage.csproj">
-      <Project>{40f64215-35fa-4850-9015-a171e3d23993}</Project>
-      <Name>Saki.TreeStorage.FileSystemStorage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Extensions\Saki.Framework.DesktopApp.Extensions.Base\Saki.Framework.DesktopApp.Extensions.Base.csproj">
-      <Project>{d5719889-6bd5-4f57-b414-e07a16fcff4f}</Project>
-      <Name>Saki.Framework.DesktopApp.Extensions.Base</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro">
-      <Version>1.6.5</Version>
-    </PackageReference>
     <PackageReference Include="ReactiveUI">
       <Version>9.4.1</Version>
     </PackageReference>

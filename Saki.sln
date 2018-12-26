@@ -29,41 +29,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trash", "trash", "{456B9609
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtLoaders", "ExtLoaders", "{3B19A80C-85C0-44FB-B686-AE81FA9DA9B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.NetCoreExtensionsLoader", "src\ExtLoaders\Saki.Framework.NetCoreExtensionsLoader\Saki.Framework.NetCoreExtensionsLoader.csproj", "{3B109763-196A-408A-AB51-8BCBDA0EBE5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Saki.Framework.NetCoreExtensionsLoader", "src\ExtLoaders\Saki.Framework.NetCoreExtensionsLoader\Saki.Framework.NetCoreExtensionsLoader.csproj", "{3B109763-196A-408A-AB51-8BCBDA0EBE5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{DF0607EB-D291-498A-8A21-C360F485B6A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleExtension", "src\sample\SampleExtension\SampleExtension.csproj", "{D2CBC0B8-53CF-4D30-BD70-89D48C6528F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleExtension", "src\sample\SampleExtension\SampleExtension.csproj", "{D2CBC0B8-53CF-4D30-BD70-89D48C6528F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{58A5DE3C-61D0-40FB-9981-6150C38C0332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCore.TestConsole", "src\test\NetCore.TestConsole\NetCore.TestConsole.csproj", "{06712AF6-89A0-4D3E-A427-4A6AF5E316C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.TestConsole", "src\test\NetCore.TestConsole\NetCore.TestConsole.csproj", "{06712AF6-89A0-4D3E-A427-4A6AF5E316C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.NetExtensionsLoader", "src\ExtLoaders\Saki.Framework.NetExtensionsLoader\Saki.Framework.NetExtensionsLoader.csproj", "{00BBC4EF-2867-4CAD-B324-3825BE31C04C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.TestConsole", "src\test\Net.TestConsole\Net.TestConsole.csproj", "{6C9902E6-F9C6-4555-9762-93DB1B0A56C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleExtensionWithDependency", "src\sample\SampleExtensionWithDependency\SampleExtensionWithDependency.csproj", "{63112C9F-501E-4794-8AD7-45F548216B06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleExtensionWithDependency", "src\sample\SampleExtensionWithDependency\SampleExtensionWithDependency.csproj", "{63112C9F-501E-4794-8AD7-45F548216B06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TreeStorages", "TreeStorages", "{D4B6ADA6-6405-47B5-8987-5D13C0B91CD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.TreeStorage.FileSystemStorage", "src\TreeStorages\Saki.TreeStorage.FileSystemStorage\Saki.TreeStorage.FileSystemStorage.csproj", "{40F64215-35FA-4850-9015-A171E3D23993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Saki.TreeStorage.FileSystemStorage", "src\TreeStorages\Saki.TreeStorage.FileSystemStorage\Saki.TreeStorage.FileSystemStorage.csproj", "{40F64215-35FA-4850-9015-A171E3D23993}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.Services", "src\Saki.Framework.Services\Saki.Framework.Services.csproj", "{1B20C2AC-55D2-4B19-B3C8-1BA8BF01D544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Saki.Framework.Services", "src\Saki.Framework.Services\Saki.Framework.Services.csproj", "{1B20C2AC-55D2-4B19-B3C8-1BA8BF01D544}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{BA382650-2BA3-438D-9167-68F6E2304A4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SakiBase", "SakiBase", "{8AA185E3-AB8C-4948-AD59-988B3367BDE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.Extensions.Base", "src\Extensions\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj", "{6D75484A-7049-4D92-8D5C-E83F85FDD8C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Saki.Framework.Extensions.Base", "src\Extensions\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj", "{6D75484A-7049-4D92-8D5C-E83F85FDD8C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebElements", "WebElements", "{DA67A5DF-39EE-42BA-922F-EF189A4F312C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.Extensions.WebElements", "src\Extensions\WebElements\Saki.Framework.Extensions.WebElements\Saki.Framework.Extensions.WebElements.csproj", "{B9258447-05F4-4A67-9B5F-22A9C87D26AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Saki.Framework.Extensions.WebElements", "src\Extensions\WebElements\Saki.Framework.Extensions.WebElements\Saki.Framework.Extensions.WebElements.csproj", "{B9258447-05F4-4A67-9B5F-22A9C87D26AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{C16AED6A-657B-4A14-BF47-8ED29B628454}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.DesktopApp", "src\Desktop\Saki.Framework.DesktopApp\Saki.Framework.DesktopApp.csproj", "{45498630-D347-4C0B-BDD0-7B2CD7682C0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saki.Framework.DesktopApp.Extensions.Base", "src\Desktop\Extensions\Saki.Framework.DesktopApp.Extensions.Base\Saki.Framework.DesktopApp.Extensions.Base.csproj", "{D5719889-6BD5-4F57-B414-E07A16FCFF4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{7B641FCB-D69A-45D3-A421-BA9F9FE42B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,6 +155,10 @@ Global
 		{45498630-D347-4C0B-BDD0-7B2CD7682C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45498630-D347-4C0B-BDD0-7B2CD7682C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45498630-D347-4C0B-BDD0-7B2CD7682C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5719889-6BD5-4F57-B414-E07A16FCFF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5719889-6BD5-4F57-B414-E07A16FCFF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5719889-6BD5-4F57-B414-E07A16FCFF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5719889-6BD5-4F57-B414-E07A16FCFF4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +194,8 @@ Global
 		{B9258447-05F4-4A67-9B5F-22A9C87D26AC} = {DA67A5DF-39EE-42BA-922F-EF189A4F312C}
 		{C16AED6A-657B-4A14-BF47-8ED29B628454} = {91C9EAA2-86EA-4259-9852-119EB686DAF2}
 		{45498630-D347-4C0B-BDD0-7B2CD7682C0B} = {C16AED6A-657B-4A14-BF47-8ED29B628454}
+		{D5719889-6BD5-4F57-B414-E07A16FCFF4F} = {7B641FCB-D69A-45D3-A421-BA9F9FE42B88}
+		{7B641FCB-D69A-45D3-A421-BA9F9FE42B88} = {C16AED6A-657B-4A14-BF47-8ED29B628454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BD7ED15-FE43-4DE4-8B0A-0F3134F209F7}

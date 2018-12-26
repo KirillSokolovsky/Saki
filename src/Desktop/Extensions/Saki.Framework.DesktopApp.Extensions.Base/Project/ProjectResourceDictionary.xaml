@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Saki.Framework.DesktopApp.Extensions.Base.Project">
+
+    <HierarchicalDataTemplate x:Shared="False"
+                              x:Key="ProjectTreeItemViewModelTreeItemDataTemplate"
+                              DataType="{x:Type local:ProjectTreeItemViewModel}">
+
+        <StackPanel Orientation="Horizontal">
+            
+            <TextBlock>Project</TextBlock>
+            
+            <ContentPresenter DataContext="{Binding}" 
+                              ContentTemplate="{StaticResource TreeItemViewModelTreeItemDataTemplate}">
+                
+            </ContentPresenter>
+
+        </StackPanel>
+
+    </HierarchicalDataTemplate>
+
+</ResourceDictionary>

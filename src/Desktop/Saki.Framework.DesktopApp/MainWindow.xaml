@@ -8,6 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="Do" Click="DoMenuItem_Click"></MenuItem>
+        </Menu>
         
+        <local:SakiTreeUserControl Grid.Row="1">
+            
+        </local:SakiTreeUserControl>
     </Grid>
 </Controls:MetroWindow>
