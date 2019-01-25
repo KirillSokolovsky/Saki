@@ -8,34 +8,34 @@
     using Saki.Framework.Logging;
     using Saki.Framework.Result;
 
-    public class RegisteredCommand
+    public class RegisteredRequest
     {
-        public string CommandName { get; private set; }
+        public string RequestName { get; private set; }
         public RegisteredItemDataType ItemDataType { get; private set; }
 
         private List<RegisteredHandler> _handlers = new List<RegisteredHandler>();
 
 
-        public RegisteredCommand(string commandName, RegisteredItemDataType itemDataType)
+        public RegisteredRequest(string commandName, RegisteredItemDataType itemDataType)
         {
-            CommandName = commandName;
+            RequestName = commandName;
             ItemDataType = itemDataType;
         }
 
-        public SakiResult AddHandlerToCommand(RegisteredHandler regHandler, ILogger log)
+        public SakiResult AddHandlerToRequest(RegisteredHandler regHandler, ILogger log)
         {
             var existed = _handlers.FirstOrDefault(h => h.Extension == regHandler.Extension);
             if (existed != null)
             {
-                var ex = new SakiExtensionsServiceException(nameof(AddHandlerToCommand),
-                    $"Couldn't add handler for command, another handler for the same extension exists.{Environment.NewLine}" +
+                var ex = new SakiExtensionsServiceException(nameof(AddHandlerToRequest),
+                    $"Couldn't add handler for request, another handler for the same extension exists.{Environment.NewLine}" +
                     $"Handler to add:{regHandler}" +
                     $"Existed handler:{existed}");
                 log?.ERROR(ex.Message);
                 return SakiResult.FromEx(ex);
             }
 
-            regHandler.SetCommand(this);
+            regHandler.SetRequest(this);
             _handlers.Add(regHandler);
 
             return SakiResult.Ok;
@@ -43,7 +43,7 @@
 
         public void LogFullTree(ILogger log)
         {
-            log = log?.CreateChildLogger($"Command: {CommandName}");
+            log = log?.CreateChildLogger($"Request: {RequestName}");
 
             foreach (var handler in _handlers)
             {

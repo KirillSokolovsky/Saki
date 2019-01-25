@@ -9,7 +9,7 @@
         public Type HandlerType { get; private set; }
         public RegisteredExtension Extension { get; private set; }
         public RegisteredItemDataType ItemDataType { get; private set; }
-        public RegisteredCommand Command { get; private set; }
+        public RegisteredRequest Request { get; private set; }
 
         public RegisteredHandler(Type handlerType, RegisteredExtension extension, RegisteredItemDataType itemDataType)
         {
@@ -18,9 +18,9 @@
             ItemDataType = itemDataType;
         }
 
-        public void SetCommand(RegisteredCommand registeredCommand)
+        public void SetRequest(RegisteredRequest registeredCommand)
         {
-            Command = registeredCommand;
+            Request = registeredCommand;
         }
     }
 }

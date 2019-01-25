@@ -12,12 +12,14 @@
         public RegisteredItemDataType ParentRegisteredType { get; set; }
         private List<RegisteredItemDataType> _childRegisteredTypes { get; set; } = new List<RegisteredItemDataType>();
 
-        private RegisteredCommands _commands { get; set; }
+        private RegisteredRequests _requests { get; set; }
+        public Dictionary<string, RegisteredCommandsProvider> CommandsProviders { get; private set; }
 
         public RegisteredItemDataType(Type type)
         {
             ItemDataType = type;
-            _commands = new RegisteredCommands(this);
+            _requests = new RegisteredRequests(this);
+            CommandsProviders = new Dictionary<string, RegisteredCommandsProvider>();
         }
 
         public RegisteredItemDataType RegisterItemDataType(Type newType)
@@ -58,30 +60,40 @@
                 ?.GetRegisteredItemDataTypeForType(type);
         }
 
-        public RegisteredCommand GetOrAddCommand(string commandName)
+        public RegisteredRequest GetOrAddRequest(string requestName)
         {
-            return _commands.GetOrAddCommand(commandName);
+            return _requests.GetOrAddRequest(requestName);
         }
 
+        public RegisteredRequest GetRequestOrDefault(string requestName)
+        {
+            return _requests.GetRequestOrDefault(requestName);
+        }
 
         public void LogTypesHierarchy(ILogger log)
         {
-            log = log.CreateChildLogger($"Type: {ItemDataType}");
+            log = log?.CreateChildLogger($"Type: {ItemDataType}");
             _childRegisteredTypes.ForEach(n => n.LogTypesHierarchy(log));
         }
 
         public void LogFullTree(ILogger log)
         {
-            log = log.CreateChildLogger($"Type: {ItemDataType}");
-            _commands.LogFullTree(log);
+            log = log?.CreateChildLogger($"Type: {ItemDataType}");
+            _requests.LogFullTree(log);
 
+            if (CommandsProviders.Count > 0)
+            {
+                log = log.CreateChildLogger("Commands Providers:");
+
+                foreach (var provider in CommandsProviders)
+                {
+                    log?.INFO($"{provider.Key} | {provider.Value.ProviderType}");
+                }
+            }
+
+            if (_childRegisteredTypes.Count == 0) return;
             log = log?.CreateChildLogger("Child Types:");
             _childRegisteredTypes.ForEach(n => n.LogFullTree(log));
-        }
-
-        internal RegisteredCommand GetCommandOrDefault(string commandName)
-        {
-            return _commands.GetCommandOrDefault(commandName);
         }
     }
 }

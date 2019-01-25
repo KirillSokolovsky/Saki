@@ -13,5 +13,7 @@
 
         SakiResult<object> FindHandler<TResult>(ISakiRequest<TResult> request)
             where TResult : ISakiResult;
+
+        SakiResult<ISakiCommandsProvider> FindCommandsProvider(ISakiTreeItem<ISakiTreeItemData> item);
     }
 }

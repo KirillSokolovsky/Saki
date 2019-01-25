@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Saki.Common\Saki.Common.csproj" />
     <ProjectReference Include="..\Saki.Core\Saki.Core.csproj" />
-    <ProjectReference Include="..\Saki\Saki.csproj" />
   </ItemGroup>
 
 </Project>

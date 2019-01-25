@@ -53,14 +53,31 @@
 
             log?.INFO($"Try Load assemblies from dll. Count: {possibleExtensionsFileInfos.Count}:", possibleExtensionsFileInfos.Select(f => f.Name));
 
+            Func<Assembly, ILogger, bool> loadingConditions = (loadedAssembly, loadingLog) =>
+            {
+                Type infoProviderType = loadedAssembly.GetCustomAttribute<SakiFrameworkExtensionInfoAttribute>()
+                    .InfoProviderType;
+                loadingLog?.INFO($"InfoProviderType: {infoProviderType.FullName}");
 
-            var loadResult = LoadAssembliesWithResolving(possibleExtensionsFileInfos, dllsFileInfos, log);
+                if (!typeof(ISakiExtensionInfoProvider).IsAssignableFrom(infoProviderType))
+                    loadingLog?.INFO($"{infoProviderType.FullName} doesn't implements ISakiExtensionInfoProvider");
+                else if (!infoProviderType.IsClass)
+                    loadingLog?.INFO($"{infoProviderType.FullName} is not a class");
+                else if (infoProviderType.IsAbstract)
+                    loadingLog?.INFO($"{infoProviderType.FullName} is an abstract class");
+                else if (infoProviderType.GetConstructor(Type.EmptyTypes) == null)
+                    loadingLog?.INFO($"{infoProviderType.FullName} doesn't implement empty ctor");
+                else
+                    return true;
+                return false;
+            };
+
+            var loadResult = LoadAssembliesWithResolving(loadingConditions, possibleExtensionsFileInfos, dllsFileInfos, log);
             return loadResult;
         }
 
-
         protected abstract bool IsAssemblySakiExtension(FileInfo dllFileInfo, ILogger scanLog);
 
-        protected abstract SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log);
+        protected abstract SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(Func<Assembly, ILogger, bool> shouldAssemblyBeLoadedCondition, List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log);
     }
 }

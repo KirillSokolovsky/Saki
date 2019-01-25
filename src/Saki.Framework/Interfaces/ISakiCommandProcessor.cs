@@ -7,9 +7,9 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public interface ISakiCoreService
+    public interface ISakiCommandProcessor<in TCommand>
+        where TCommand : ISakiCommand
     {
-        Task<TResult> ProcessRequest<TResult>(ISakiRequest<TResult> request, CancellationToken cancellationToken)
-            where TResult : ISakiResult;
+        Task<SakiResult> ProcessCommand(TCommand command, CancellationToken cancellationToken);
     }
 }

@@ -9,8 +9,4 @@
     <PackageReference Include="SimpleInjector" Version="4.4.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Saki\Saki.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -7,6 +7,7 @@
     public interface ISakiCommand
     {
         string CommandName { get; }
+        string Description { get; }
         ISakiTreeState TreeState { get; }
     }
 }

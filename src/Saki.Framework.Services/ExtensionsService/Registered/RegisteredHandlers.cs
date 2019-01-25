@@ -46,11 +46,11 @@ namespace Saki.Framework.Services.ExtensionsService.Registered
                 return result;
             }
 
-            var regCommand = regItemDataType.GetOrAddCommand(handler.HandledCommandName);
+            var regCommand = regItemDataType.GetOrAddRequest(handler.HandledCommandName);
 
             var regHandler = new RegisteredHandler(handler.HandlerType, extension, regItemDataType);
 
-            var regHandlerResult = regCommand.AddHandlerToCommand(regHandler, log);
+            var regHandlerResult = regCommand.AddHandlerToRequest(regHandler, log);
             result.AddResult(regHandlerResult);
 
             return result;

@@ -25,6 +25,7 @@
         private readonly ISakiExtensionsLoadingService _loadingService;
 
         private RegisteredItemDataTypes _itemDataTypes;
+        private RegisteredCommandsProviders _commandsProviders;
         private RegisteredExtensions _extensions;
         private RegisteredHandlers _handlers;
 
@@ -35,6 +36,7 @@
             _loadingService = container.GetInstance<ISakiExtensionsLoadingService>();
 
             _itemDataTypes = new RegisteredItemDataTypes();
+            _commandsProviders = new RegisteredCommandsProviders(_itemDataTypes);
             _handlers = new RegisteredHandlers(_itemDataTypes);
             _extensions = new RegisteredExtensions();
         }
@@ -105,12 +107,19 @@
             log = log?.CreateChildLogger($"Register extension items: {descriptor.ExtensionName}");
             var result = new SakiResult();
 
+            var regExtension = _extensions.GetOrAdd(descriptor.ExtensionName, descriptor.AssemblyName);
+
+            //TODO: Add ext dependencies 
+            //var refed = loadedAssembly.GetReferencedAssemblies();
+            //_extensions.AllExtensions().Any(e => e.AssemblyName == lo)
+
             _itemDataTypes.RegisterNewItemDataTypes(descriptor.ItemDataTypes);
 
-            var regExtension = _extensions.GetOrAdd(descriptor.ExtensionName);
+            var handlersRegResult = _handlers.RegisterHandlers(regExtension, descriptor.RequestHandlersDescriptors, log);
+            result.AddResult(handlersRegResult);
 
-            var regResult = _handlers.RegisterHandlers(regExtension, descriptor.RequestHandlersDescriptors, log);
-            result.AddResult(regResult);
+            var providersRegResult = _commandsProviders.RegisterProviders(regExtension, descriptor.CommandsProvidersDescriptors, log);
+            result.AddResult(providersRegResult);
 
             return result;
         }
@@ -143,14 +152,14 @@
             RegisteredHandler handler = null;
             while (regDataType != null)
             {
-                RegisteredCommand regCommand = regDataType.GetCommandOrDefault(request.CommandName);
-                if (regCommand == null)
+                RegisteredRequest regRequest = regDataType.GetRequestOrDefault(request.CommandName);
+                if (regRequest == null)
                 {
                     regDataType = regDataType.ParentRegisteredType;
                     continue;
                 }
 
-                handler = regCommand.GetHandler(request.ExtensionName);
+                handler = regRequest.GetHandler(request.ExtensionName);
 
                 if (handler == null)
                 {
@@ -183,6 +192,58 @@
             }
 
             result.SetData(handlerObj);
+
+            return result;
+        }
+
+        public SakiResult<ISakiCommandsProvider> FindCommandsProvider(ISakiTreeItem<ISakiTreeItemData> item)
+        {
+            var result = new SakiResult<ISakiCommandsProvider>();
+
+            var itemDataType = Type.GetType(item.ItemDataType);
+
+            if (itemDataType == null)
+            {
+                var ex = new SakiHandlerResolvingException(nameof(FindCommandsProvider),
+                    $"Couldn't find type: {itemDataType} to get commands provider");
+                result.AddError(new SakiError(ex));
+                return result;
+            }
+
+            var regDataType = _itemDataTypes.GetRegisteredItemDataTypeForType(itemDataType);
+            if (regDataType == null)
+            {
+                var ex = new SakiHandlerResolvingException(nameof(FindCommandsProvider),
+                    $"ItemDataType: {itemDataType} is not registered");
+                result.AddError(new SakiError(ex));
+                return result;
+            }
+
+            RegisteredCommandsProvider provider = null;
+            while (regDataType != null)
+            {
+                provider = _commandsProviders.GetCommandsProviderOrDefault(regDataType, item.ExtensionName);
+                if (provider == null)
+                {
+                    regDataType = regDataType.ParentRegisteredType;
+                    continue;
+                }
+
+                break;
+            }
+
+            if (provider == null)
+            {
+                var ex = new SakiHandlerResolvingException(nameof(FindCommandsProvider),
+                    $"Couldn't find commands provider for item with type: {item.ItemDataType} | extension: {item.ExtensionName}");
+                result.AddError(new SakiError(ex));
+                return result;
+            }
+
+            ISakiCommandsProvider providerObj = null;
+            providerObj = (ISakiCommandsProvider)_container.GetInstance(provider.ProviderType);
+
+            result.SetData(providerObj);
 
             return result;
         }

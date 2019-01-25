@@ -7,10 +7,12 @@
     public class RegisteredExtension
     {
         public string ExtensionName { get; protected set; }
+        public string AssemblyName { get; protected set; }
 
-        public RegisteredExtension(string extensionName)
+        public RegisteredExtension(string extensionName, string assemblyName)
         {
             ExtensionName = extensionName;
+            AssemblyName = assemblyName;
         }
     }
 }

@@ -14,16 +14,21 @@
 
         }
 
-        public RegisteredExtension GetOrAdd(string extensionName)
+        public RegisteredExtension GetOrAdd(string extensionName, string assemblyName)
         {
             var extension = _extensions.FirstOrDefault(e => e.ExtensionName == extensionName);
             if(extension == null)
             {
-                extension = new RegisteredExtension(extensionName);
+                extension = new RegisteredExtension(extensionName, assemblyName);
                 _extensions.Add(extension);
             }
 
             return extension;
+        }
+
+        public IReadOnlyCollection<RegisteredExtension> AllExtensions()
+        {
+            return _extensions;
         }
     }
 }

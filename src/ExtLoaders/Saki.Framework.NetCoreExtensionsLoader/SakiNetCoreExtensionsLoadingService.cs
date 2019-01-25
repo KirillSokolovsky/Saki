@@ -38,7 +38,7 @@
             }
         }
 
-        protected override SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log)
+        protected override SakiResult<IEnumerable<Assembly>> LoadAssembliesWithResolving(Func<Assembly, ILogger, bool> shouldAssemblyBeLoadedCondition, List<FileInfo> assembliesToLoad, List<FileInfo> allAssemblies, ILogger log)
         {
             var loadedAssemblies = new List<Assembly>();
 
@@ -46,23 +46,10 @@
             {
                 var loadingLog = log?.CreateChildLogger($"Loading: {assemblyToLoad.Name}");
                 var loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyToLoad.FullName);
-
-
-                Type infoProviderType = loadedAssembly.GetCustomAttribute<SakiFrameworkExtensionInfoAttribute>()
-                    .InfoProviderType;
-                loadingLog?.INFO($"InfoProviderType: {infoProviderType.FullName}");
-
-                if (!typeof(ISakiExtensionInfoProvider).IsAssignableFrom(infoProviderType))
-                    loadingLog?.INFO($"{infoProviderType.FullName} doesn't implements ISakiExtensionInfoProvider");
-                else if (!infoProviderType.IsClass)
-                    loadingLog?.INFO($"{infoProviderType.FullName} is not a class");
-                else if (infoProviderType.IsAbstract)
-                    loadingLog?.INFO($"{infoProviderType.FullName} is an abstract class");
-                else if (infoProviderType.GetConstructor(Type.EmptyTypes) == null)
-                    loadingLog?.INFO($"{infoProviderType.FullName} doesn't implement empty ctor");
-                else
+                
+                if (shouldAssemblyBeLoadedCondition(loadedAssembly, log))
                 {
-                    loadingLog?.INFO($"Assembly: {loadedAssembly.FullName} loaded and available for futher scanning");
+                    loadingLog?.INFO($"Assembly: {loadedAssembly.FullName} loaded");
                     loadedAssemblies.Add(loadedAssembly);
                 }
             }

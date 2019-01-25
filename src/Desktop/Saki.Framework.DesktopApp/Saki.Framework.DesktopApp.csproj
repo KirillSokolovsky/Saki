@@ -55,7 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IDesktopCommandProcessingService.cs" />
+    <Compile Include="Core\DesktopCommandProcessingService.cs" />
+    <Compile Include="Core\ISakiDesktopExtensionsLoadingService.cs" />
+    <Compile Include="Core\ISakiDesktopExtensionsService.cs" />
+    <Compile Include="Core\SakiDesktopExtensionsLoadingService.cs" />
+    <Compile Include="Core\SakiDesktopExtensionsService.cs" />
     <Compile Include="SakiTreeUserControl.xaml.cs">
       <DependentUpon>SakiTreeUserControl.xaml</DependentUpon>
     </Compile>

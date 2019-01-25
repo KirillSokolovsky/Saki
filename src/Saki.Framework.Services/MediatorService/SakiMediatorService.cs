@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Services.CoreService
+﻿namespace Saki.Framework.Services.MediatorService
 {
     using Saki.Framework.Interfaces;
     using Saki.Framework.Internal.Interfaces;
@@ -10,12 +10,12 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class SakiCoreService : ISakiCoreService
+    public class SakiMediatorService : ISakiMediatorService
     {
         private readonly Container _container;
         private readonly ISakiExtensionsService _extensionsService;
 
-        public SakiCoreService(Container container)
+        public SakiMediatorService(Container container)
         {
             _container = container;
             _extensionsService = _container.GetInstance<ISakiExtensionsService>();
@@ -38,6 +38,14 @@
             var processingResult = await processingTask;
 
             return processingResult;
+        }
+        
+
+        public async Task<SakiResult<IEnumerable<ISakiCommand>>> GetAvailableCommands(ISakiTreeState treeState, CancellationToken cancellationToken)
+        {
+            var commandProvider = _extensionsService.FindCommandsProvider(treeState.CurrentItem);
+
+            return await commandProvider.Data.GetAvailableCommands(treeState, cancellationToken);
         }
     }
 }

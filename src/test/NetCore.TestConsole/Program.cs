@@ -10,7 +10,7 @@
     using Saki.Framework.Logging.Simple;
     using Saki.Framework.NetCoreExtensionsLoader;
     using Saki.Framework.SakiTree;
-    using Saki.Framework.Services.CoreService;
+    using Saki.Framework.Services.MediatorService;
     using Saki.Framework.Services.ExtensionsService;
     using Saki.Framework.Services.SerializationService;
     using Saki.Framework.Services.TreeRepositoryService;
@@ -36,14 +36,14 @@
             container.Register<ISakiTreeRepositoryService, SakiTreeRepositoryService>(Lifestyle.Singleton);
             container.Register<ISakiExtensionsLoadingService, SakiNetCoreExtensionsLoadingService>(Lifestyle.Singleton);
             container.Register<ISakiExtensionsService, SakiExtensionsService>(Lifestyle.Singleton);
-            container.Register<ISakiCoreService, SakiCoreService>(Lifestyle.Singleton);
+            container.Register<ISakiMediatorService, SakiMediatorService>(Lifestyle.Singleton);
                                  
             container.Verify();
 
             var extService = container.GetInstance<ISakiExtensionsService>();
             var extAss = extService.LoadExtension(null);
 
-            var core = container.GetInstance<ISakiCoreService>();
+            var core = container.GetInstance<ISakiMediatorService>();
 
             var data = new SakiProjectTreeItemData();
             var item = new SakiTreeItem<SakiProjectTreeItemData>(data);

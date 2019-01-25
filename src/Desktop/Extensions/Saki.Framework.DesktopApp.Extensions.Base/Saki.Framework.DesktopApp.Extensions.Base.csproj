@@ -58,6 +58,7 @@
     </Page>
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\SakiTreeItemChildrenConverters.cs" />
+    <Compile Include="ExtensionInfoProvider.cs" />
     <Compile Include="Project\ProjectTreeItemViewModel.cs" />
     <Compile Include="Tree\TreeItemViewModel.cs" />
   </ItemGroup>

@@ -7,11 +7,11 @@
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class SakiRequestInfoAttribute : Attribute
     {
-        public string CommandName { get; set; }
+        public string RequestName { get; set; }
 
-        public SakiRequestInfoAttribute(string commandName)
+        public SakiRequestInfoAttribute(string requestName)
         {
-            CommandName = commandName;
+            RequestName = requestName;
         }
     }
 }

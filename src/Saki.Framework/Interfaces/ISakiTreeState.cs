@@ -7,6 +7,8 @@
     public interface ISakiTreeState
     {
         int CurrentItemId { get; }
+        ISakiTreeItem<ISakiTreeItemData> CurrentItem { get; }
+
         int ItemInBufferId { get; }
     }
 }
