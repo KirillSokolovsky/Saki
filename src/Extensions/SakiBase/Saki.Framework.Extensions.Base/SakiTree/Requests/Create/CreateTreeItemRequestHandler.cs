@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Base.SakiTree.Commands.Create
+﻿namespace Saki.Framework.Base.SakiTree.Requests.Create
 {
     using Saki.Framework.Attributes;
     using Saki.Framework.Exceptions;
@@ -12,7 +12,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    [SakiRequestHandlerInfo(TreeItemCommandNames.CreateTreeItemCommandName, typeof(ISakiTreeItemData))]
+    [SakiRequestHandlerInfo(TreeItemRequestsNames.CreateTreeItemRequestName, typeof(ISakiTreeItemData))]
     public class CreateTreeItemRequestHandler : BaseTreeItemRequestHandler,
         ISakiRequestHandler<ICreateTreeItemRequest<ISakiTreeItem<ISakiTreeItemData>>, ISakiResult<int>>
     {

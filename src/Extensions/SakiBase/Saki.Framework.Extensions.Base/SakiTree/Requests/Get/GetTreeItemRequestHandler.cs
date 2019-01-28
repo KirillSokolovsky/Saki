@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Base.SakiTree.Commands.Get
+﻿namespace Saki.Framework.Base.SakiTree.Requests.Get
 {
     using Saki.Framework.Attributes;
     using Saki.Framework.Interfaces;
@@ -11,7 +11,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    [SakiRequestHandlerInfo(TreeItemCommandNames.GetTreeItemCommandName, typeof(ISakiTreeItemData))]
+    [SakiRequestHandlerInfo(TreeItemRequestsNames.GetTreeItemRequestName, typeof(ISakiTreeItemData))]
     public class GetTreeItemRequestHandler<TData> : BaseTreeItemRequestHandler,
         ISakiRequestHandler<GetTreeItemRequest<TData>, SakiResult<SakiTreeItem<TData>>>
         where TData : ISakiTreeItemData

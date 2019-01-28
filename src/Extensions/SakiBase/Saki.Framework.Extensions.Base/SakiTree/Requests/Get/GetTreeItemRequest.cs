@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Base.SakiTree.Commands.Get
+﻿namespace Saki.Framework.Base.SakiTree.Requests.Get
 {
     using Saki.Framework.Attributes;
     using Saki.Framework.Interfaces;
@@ -14,7 +14,7 @@
         public int ItemId { get; protected set; }
         public string ExtensionName { get; protected set; }
         public string ItemDataType => typeof(TData).GetSakiTypeName();
-        public string CommandName => TreeItemCommandNames.GetTreeItemCommandName;
+        public string CommandName => TreeItemRequestsNames.GetTreeItemRequestName;
 
         public GetTreeItemRequest(string extensionName, int itemId)
         {

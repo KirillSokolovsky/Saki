@@ -14,7 +14,9 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
+            <MenuItem Header="Load" Click="LoadTree_Click"></MenuItem>
             <MenuItem Header="Do" Click="DoMenuItem_Click"></MenuItem>
+            <MenuItem Header="Save" Click="SaveTree_Click"></MenuItem>
         </Menu>
         
         <local:SakiTreeUserControl Grid.Row="1">

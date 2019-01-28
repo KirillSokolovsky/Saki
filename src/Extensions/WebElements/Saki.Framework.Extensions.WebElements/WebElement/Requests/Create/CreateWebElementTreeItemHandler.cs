@@ -1,7 +1,7 @@
-﻿namespace Saki.Framework.Extensions.WebElements.WebElement.Commands.Create
+﻿namespace Saki.Framework.Extensions.WebElements.WebElement.Requests.Create
 {
-    using Saki.Framework.Base.SakiTree.Commands;
-    using Saki.Framework.Extensions.WebElements.Commands.Create;
+    using Saki.Framework.Base.SakiTree.Requests;
+    using Saki.Framework.Extensions.WebElements.Requests.Create;
     using Saki.Framework.Extensions.WebElements.WebElementsRoot;
     using Saki.Framework.Interfaces;
     using Saki.Framework.Result;

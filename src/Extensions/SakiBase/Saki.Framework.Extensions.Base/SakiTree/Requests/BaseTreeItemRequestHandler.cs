@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Base.SakiTree.Commands
+﻿namespace Saki.Framework.Base.SakiTree.Requests
 {
     using Saki.Framework.Interfaces;
     using SimpleInjector;

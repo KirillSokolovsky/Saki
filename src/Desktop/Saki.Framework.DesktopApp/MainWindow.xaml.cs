@@ -30,6 +30,10 @@
     using System.Windows.Navigation;
     using System.Windows.Shapes;
     using Saki.Framework.DesktopApp.Core;
+    using Saki.Framework.Result;
+    using Saki.Framework.Base.SakiTree.Requests.Get;
+    using Saki.Framework.Base.SakiTree.Requests.GetChildren;
+    using System.Threading;
 
     public partial class MainWindow : MetroWindow
     {
@@ -44,6 +48,8 @@
         public MainWindow()
         {
             _model = new ViewModel();
+
+            _container = new Container();
 
             _container.Register<ILogger, SimpleLogger>(Lifestyle.Singleton);
             _container.Register<ISakiTreeItemDataSerializaionService, SakiTreeItemDataSerializationService>(Lifestyle.Singleton);
@@ -65,9 +71,10 @@
             InitializeComponent();
         }
 
-        private void DoMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void DoMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var items = _model.Items;
+
 
             var projItem = new ProjectTreeItemViewModel { Name = "MyProject", Description = "My project desc", ItemId = 1 };
 
@@ -84,9 +91,41 @@
                     item.Items.Add(citem);
                 }
             }
+        }
 
+        private async void LoadTree_Click(object sender, RoutedEventArgs e)
+        {
             var st = _container.GetInstance<ISakiTreeStorage>() as FileSystemSakiTreeStorage;
-            st.Save();
+            var loadResult = await st.Load().ConfigureAwait(true);
+            if (loadResult.Result != SakiResultType.Ok)
+            {
+                MessageBox.Show(loadResult.GetFullErrorsString(), "Error occured during loading tree.");
+                return;
+            }
+
+            var treeRepo = _container.GetInstance<ISakiTreeRepositoryService>();
+            var desktopService = _container.GetInstance<ISakiDesktopExtensionsService>();
+
+            var mediator = _container.GetInstance<ISakiMediatorService>();
+
+            var request = new GetChildTreeItemsRequest(Extensions.Base.ExtensionInfoProvider.BaseExtensionName, 0);
+
+            var topLevelTreeItemsResult = await mediator.ProcessRequest<ISakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>>
+                (request, CancellationToken.None).ConfigureAwait(true);
+
+            var items = topLevelTreeItemsResult.Data.ToList();
+        }
+
+        private async void SaveTree_Click(object sender, RoutedEventArgs e)
+        {
+            var st = _container.GetInstance<ISakiTreeStorage>() as FileSystemSakiTreeStorage;
+            var saveResult = await st.Save().ConfigureAwait(true);
+
+            if (saveResult.Result != SakiResultType.Ok)
+            {
+                MessageBox.Show(saveResult.GetFullErrorsString(), "Error occured during saving tree.");
+                return;
+            }
         }
     }
 }

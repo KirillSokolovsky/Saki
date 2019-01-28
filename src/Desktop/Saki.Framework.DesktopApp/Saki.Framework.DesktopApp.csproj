@@ -108,6 +108,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\SakiBase\Saki.Framework.Extensions.Base\Saki.Framework.Extensions.Base.csproj">
+      <Project>{6D75484A-7049-4D92-8D5C-E83F85FDD8C5}</Project>
+      <Name>Saki.Framework.Extensions.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ExtLoaders\Saki.Framework.NetExtensionsLoader\Saki.Framework.NetExtensionsLoader.csproj">
       <Project>{00bbc4ef-2867-4cad-b324-3825be31c04c}</Project>
       <Name>Saki.Framework.NetExtensionsLoader</Name>

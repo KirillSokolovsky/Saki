@@ -1,4 +1,4 @@
-﻿namespace Saki.Framework.Base.SakiTree.Commands.GetChildren
+﻿namespace Saki.Framework.Base.SakiTree.Requests.GetChildren
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@
     using Saki.Framework.Result;
     using SimpleInjector;
 
-    [SakiRequestHandlerInfo(TreeItemCommandNames.GetChildTreeItemsCommandName, typeof(ISakiTreeItemData))]
+    [SakiRequestHandlerInfo(TreeItemRequestsNames.GetChildTreeItemsRequestName, typeof(ISakiTreeItemData))]
     public class GetChildTreeItemsRequestHandler : BaseTreeItemRequestHandler,
         ISakiRequestHandler<GetChildTreeItemsRequest, SakiResult<IEnumerable<ISakiResult<ISakiTreeItem<ISakiTreeItemData>>>>>
     {
